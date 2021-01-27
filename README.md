@@ -1,14 +1,29 @@
-# Project
+# Electron-GqlMAPI
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+This is a Node Native Module wrapped around [GqlMAPI](https://github.com/microsoft/gqlmapi), built against the
+Electron runtime. You could build it for a different version of Node or v8 as long as it's supported in
+[CMake.js](https://github.com/cmake-js/cmake-js) and [NAN](https://github.com/nodejs/nan). The core logic for
+binding the GqlMAPI service to the Node v8 runtime is in [NodeBinding.cpp](./NodeBinding.cpp), and aside from
+one extra parameter in `startService` it should work with any service generated using
+[CppGraphQLGen](https://github.com/microsoft/cppgraphqlgen).
 
-As the maintainer of this project, please make a few updates:
+## Getting Started
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+To begin, you will need to satisfy the [requirements](https://github.com/microsoft/gqlmapi#getting-started)
+for building GqlMAPI. If you are using Vcpkg to install CppGraphQLGen and GoogleTest as suggested in those
+instructions, then you will also need to save an npm config setting for CMake.js to use the vcpkg.cmake
+toolchain file:
+
+```cmd
+> npm config set cmake_CMAKE_TOOLCHAIN_FILE %VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake
+```
+
+Then you can build and test the module using npm:
+
+```cmd
+> npm install
+> npm test
+```
 
 ## Contributing
 
