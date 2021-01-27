@@ -1,31 +1,50 @@
 {
   "name": "electron-gqlmapi",
-  "version": "0.1.0",
+  "license": "MIT",
+  "version": "1.0.0",
+  "description": "Node Native Module (built for electron) which exposes fetch and subscribe entrypoints to go with GqlMAPI",
+  "homepage": "https://github.com/microsoft/electron-gqlmapi",
+  "repository": "github:microsoft/electron-gqlmapi",
+  "bugs": {
+    "url": "https://github.com/microsoft/electron-gqlmapi/issues"
+  },
+  "keywords": [
+    "electron",
+    "graphql",
+    "mapi"
+  ],
+  "files": [
+    "lib/*.js",
+    "bin/*.node",
+    "bin/graphql*.dll"
+  ],
+  "directories": {
+    "lib": "lib",
+    "bin": "bin"
+  },
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "scripts": {
+    "test": "scripts\\test.cmd",
+    "build": "scripts\\build.cmd",
+    "prepare": "scripts\\prepare.cmd"
+  },
   "cmake-js": {
     "runtime": "electron",
     "runtimeVersion": "11.2.0",
     "arch": "x64"
   },
-  "description": "Node Native Module (built for electron) which exposes fetch and subscribe entrypoints to go with cppgraphqlgen",
-  "main": "index.js",
-  "scripts": {
-    "test": "jest",
-    "install": "npx cmake-js build -D",
-    "release": "npx cmake-js compile"
-  },
-  "keywords": [
-    "test"
-  ],
-  "author": "Bill Avery",
-  "license": "MIT",
   "dependencies": {
-    "cmake-js": "^6.1.0",
-    "nan": "^2.14.0"
+    "electron": "~11.2.0"
   },
   "devDependencies": {
     "@jest-runner/electron": "^3.0.0",
-    "electron": "^11.2.0",
+    "cmake-js": "^6.1.0",
     "jest": "^26.6.0",
-    "minimist": "^1.2.0"
+    "nan": "^2.14.0"
   }
 }
