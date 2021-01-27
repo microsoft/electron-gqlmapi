@@ -1,0 +1,45 @@
+name: Windows
+
+on: [push, pull_request]
+
+jobs:
+  vs2019:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+
+    - name: Cache vcpkg
+      uses: actions/cache@v2
+      id: cache-vcpkg
+      with:
+        path: vcpkg/
+        key: vcpkg-x64-windows
+
+    - name: Install Dependencies
+      if: ${{ !steps.cache-vcpkg.outputs.cache-hit }}
+      shell: pwsh
+      run: |
+        git clone https://github.com/microsoft/vcpkg
+        cd vcpkg
+        .\bootstrap-vcpkg.bat
+        .\vcpkg integrate install
+        .\vcpkg install cppgraphqlgen gtest --triplet x64-windows
+
+    - name: Create Build Environment
+      run: cmake -E make_directory build
+
+    - name: Configure
+      shell: pwsh
+      run: |
+        $vcpkgToolchain = Join-Path '.\vcpkg' '.\scripts\buildsystems\vcpkg.cmake' -Resolve
+
+        npm config set cmake_CMAKE_TOOLCHAIN_FILE $vcpkgToolchain
+
+    - name: Build
+      run: npm install
+
+    - name: Test
+      run: npm test
