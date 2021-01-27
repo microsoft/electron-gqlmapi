@@ -1,0 +1,273 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GraphQL native module tests fetches introspection 1`] = `
+Object {
+  "data": Object {
+    "__schema": Object {
+      "mutationType": Object {
+        "name": "Mutation",
+      },
+      "queryType": Object {
+        "name": "Query",
+      },
+      "subscriptionType": Object {
+        "name": "Subscription",
+      },
+      "types": Array [
+        Object {
+          "kind": "SCALAR",
+          "name": "Boolean",
+        },
+        Object {
+          "kind": "SCALAR",
+          "name": "Float",
+        },
+        Object {
+          "kind": "SCALAR",
+          "name": "ID",
+        },
+        Object {
+          "kind": "SCALAR",
+          "name": "Int",
+        },
+        Object {
+          "kind": "SCALAR",
+          "name": "String",
+        },
+        Object {
+          "kind": "ENUM",
+          "name": "__TypeKind",
+        },
+        Object {
+          "kind": "ENUM",
+          "name": "__DirectiveLocation",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "__Schema",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "__Type",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "__Field",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "__InputValue",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "__EnumValue",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "__Directive",
+        },
+        Object {
+          "kind": "SCALAR",
+          "name": "DateTime",
+        },
+        Object {
+          "kind": "SCALAR",
+          "name": "Guid",
+        },
+        Object {
+          "kind": "SCALAR",
+          "name": "Stream",
+        },
+        Object {
+          "kind": "ENUM",
+          "name": "SpecialFolder",
+        },
+        Object {
+          "kind": "ENUM",
+          "name": "PropType",
+        },
+        Object {
+          "kind": "INPUT_OBJECT",
+          "name": "ObjectId",
+        },
+        Object {
+          "kind": "INPUT_OBJECT",
+          "name": "CreateItemInput",
+        },
+        Object {
+          "kind": "INPUT_OBJECT",
+          "name": "CreateSubFolderInput",
+        },
+        Object {
+          "kind": "INPUT_OBJECT",
+          "name": "ModifyItemInput",
+        },
+        Object {
+          "kind": "INPUT_OBJECT",
+          "name": "ModifyFolderInput",
+        },
+        Object {
+          "kind": "INPUT_OBJECT",
+          "name": "MultipleItemsInput",
+        },
+        Object {
+          "kind": "INPUT_OBJECT",
+          "name": "NamedPropInput",
+        },
+        Object {
+          "kind": "INPUT_OBJECT",
+          "name": "PropIdInput",
+        },
+        Object {
+          "kind": "INPUT_OBJECT",
+          "name": "PropValueInput",
+        },
+        Object {
+          "kind": "INPUT_OBJECT",
+          "name": "PropertyInput",
+        },
+        Object {
+          "kind": "INPUT_OBJECT",
+          "name": "Order",
+        },
+        Object {
+          "kind": "INPUT_OBJECT",
+          "name": "Column",
+        },
+        Object {
+          "kind": "UNION",
+          "name": "Attachment",
+        },
+        Object {
+          "kind": "UNION",
+          "name": "NamedPropId",
+        },
+        Object {
+          "kind": "UNION",
+          "name": "PropId",
+        },
+        Object {
+          "kind": "UNION",
+          "name": "PropValue",
+        },
+        Object {
+          "kind": "UNION",
+          "name": "ItemChange",
+        },
+        Object {
+          "kind": "UNION",
+          "name": "FolderChange",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "Query",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "Mutation",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "Subscription",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "Store",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "Folder",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "Item",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "FileAttachment",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "Conversation",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "IntId",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "StringId",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "NamedId",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "IntValue",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "BoolValue",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "StringValue",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "GuidValue",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "DateTimeValue",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "BinaryValue",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "StreamValue",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "Property",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "ItemAdded",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "ItemUpdated",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "ItemRemoved",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "ItemsReloaded",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "FolderAdded",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "FolderUpdated",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "FolderRemoved",
+        },
+        Object {
+          "kind": "OBJECT",
+          "name": "FoldersReloaded",
+        },
+      ],
+    },
+  },
+}
+`;
