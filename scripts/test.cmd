@@ -1,5 +1,5 @@
 @echo off
 
 rem Build and test
-call npm run build
+call npm install
 call npx jest

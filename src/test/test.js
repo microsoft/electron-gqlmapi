@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 
 describe("GraphQL native module tests", () => {
-  const graphql = require("../build/Debug/electron-gqlmapi");
+  const graphql = require(`../build/${
+    process.env.USE_DEBUG_MODULE ? "Debug" : "Release"
+  }/electron-gqlmapi`);
 
   it("starts the service", () => {
     graphql.startService(true);
