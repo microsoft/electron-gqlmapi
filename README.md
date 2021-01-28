@@ -1,10 +1,11 @@
 # Electron-GqlMAPI
 
-This is a Node Native Module wrapped around [GqlMAPI](https://github.com/microsoft/gqlmapi), built against the
-Electron runtime. You could build it for a different version of Node or v8 as long as it's supported in
-[CMake.js](https://github.com/cmake-js/cmake-js) and [NAN](https://github.com/nodejs/nan). The core logic for
-binding the GqlMAPI service to the Node v8 runtime is in [NodeBinding.cpp](./NodeBinding.cpp), and aside from
-one extra parameter in `startService` it should work with any service generated using
+This is a Node Native Module wrapped around [GqlMAPI](https://github.com/microsoft/gqlmapi), built
+against the [Electron](https://www.electronjs.org/) runtime. You could build it for a different
+version of Node or v8 as long as it's supported in [CMake.js](https://github.com/cmake-js/cmake-js)
+and [NAN](https://github.com/nodejs/nan). The core logic for binding the GqlMAPI service to the
+Node v8 runtime is in [NodeBinding.cpp](./NodeBinding.cpp), and aside from one extra parameter in
+`startService`, it should work with any service generated using
 [CppGraphQLGen](https://github.com/microsoft/cppgraphqlgen).
 
 This project was originally based on [electron-cppgraphql](https://github.com/wravery/electron-cppgraphql),
@@ -30,6 +31,34 @@ Then you can build and test the module using npm:
 > npm install
 > npm test
 ```
+
+## Sample App
+
+There's a sample integration with [GraphiQL](https://github.com/graphql/graphiql) in
+[eMAPI](https://github.com/microsoft/eMAPI). Take a look at
+[startElectron.js](https://github.com/microsoft/eMAPI/blob/main/src/startElectron.js) to see how
+you can load the native module in the main process and connect to it with Electron's
+[IPC](https://www.electronjs.org/docs/api/ipc-main) API from the browser process. The main
+[index.js](./lib/index.js) script in this package wraps all of that up in a `startGraphQL`
+function.
+
+This project includes a [preload.js](./lib/preload.js) script exposes that IPC channel as a safer
+and friendlier API through the
+[contextBridge](https://www.electronjs.org/docs/tutorial/context-isolation). After the preload,
+Electron blocks access to APIs that haven't been exported over the bridge, including IPC. The path
+to the preload script is exported as `preloadPath` from the [index.js](./lib/index.js) script in
+this package, so if you `import`/`require` it you can set that directly on the
+[BrowserWindow](https://www.electronjs.org/docs/api/browser-window) `webPreferences.preload`
+property.
+
+The [index.js](https://github.com/microsoft/eMAPI/blob/main/src/index.js) script loaded in the
+browser process puts all of that together in a `fetchQuery` function, which GraphiQL uses for all
+service communication. This is specific to the interface that GraphiQL requires, but it is similar
+to the way that [Apollo](https://www.apollographql.com/)
+[stateless links](https://www.apollographql.com/docs/link/stateless/) work with promises and/or
+observables for subscription support. Integrating with another GraphQL client like Apollo or Relay
+is currently left as an exercise for the reader, but a future version will probably include
+reference implementations, once I have a chance to build test projects for them.
 
 ## Contributing
 
