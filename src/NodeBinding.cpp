@@ -40,7 +40,7 @@ std::shared_ptr<service::Request> serviceSingleton;
 
 } // namespace
 
-NAN_METHOD(StartService)
+NAN_METHOD(startService)
 {
 	const auto useDefaultProfile = To<bool>(info[0]).FromMaybe(false);
 
@@ -87,7 +87,7 @@ struct SubscriptionPayloadQueue : std::enable_shared_from_this<SubscriptionPaylo
 static std::map<std::int32_t, peg::ast> queryMap;
 static std::map<std::int32_t, std::shared_ptr<SubscriptionPayloadQueue>> subscriptionMap;
 
-NAN_METHOD(StopService)
+NAN_METHOD(stopService)
 {
 	if (serviceSingleton)
 	{
@@ -102,7 +102,7 @@ NAN_METHOD(StopService)
 	}
 }
 
-NAN_METHOD(ParseQuery)
+NAN_METHOD(parseQuery)
 {
 	std::string query(*Nan::Utf8String(To<String>(info[0]).ToLocalChecked()));
 	const std::int32_t queryId = (queryMap.empty() ? 1 : queryMap.crbegin()->first + 1);
@@ -118,7 +118,7 @@ NAN_METHOD(ParseQuery)
 	}
 }
 
-NAN_METHOD(DiscardQuery)
+NAN_METHOD(discardQuery)
 {
 	const auto queryId = To<std::int32_t>(info[0]).FromJust();
 
@@ -299,7 +299,7 @@ private:
 	std::shared_ptr<SubscriptionPayloadQueue> _payloadQueue;
 };
 
-NAN_METHOD(FetchQuery)
+NAN_METHOD(fetchQuery)
 {
 	const auto queryId = To<std::int32_t>(info[0]).FromJust();
 	std::string operationName(*Nan::Utf8String(To<String>(info[1]).ToLocalChecked()));
@@ -312,7 +312,7 @@ NAN_METHOD(FetchQuery)
 	AsyncQueueWorker(subscription.release());
 }
 
-NAN_METHOD(Unsubscribe)
+NAN_METHOD(unsubscribe)
 {
 	const auto queryId = To<std::int32_t>(info[0]).FromJust();
 	auto itr = subscriptionMap.find(queryId);
@@ -326,23 +326,12 @@ NAN_METHOD(Unsubscribe)
 
 NAN_MODULE_INIT(Init)
 {
-	Set(target, New<String>("startService").ToLocalChecked(),
-		GetFunction(New<FunctionTemplate>(StartService)).ToLocalChecked());
-
-	Set(target, New<String>("stopService").ToLocalChecked(),
-		GetFunction(New<FunctionTemplate>(StopService)).ToLocalChecked());
-
-	Set(target, New<String>("parseQuery").ToLocalChecked(),
-		GetFunction(New<FunctionTemplate>(ParseQuery)).ToLocalChecked());
-
-	Set(target, New<String>("discardQuery").ToLocalChecked(),
-		GetFunction(New<FunctionTemplate>(DiscardQuery)).ToLocalChecked());
-
-	Set(target, New<String>("fetchQuery").ToLocalChecked(),
-		GetFunction(New<FunctionTemplate>(FetchQuery)).ToLocalChecked());
-
-	Set(target, New<String>("unsubscribe").ToLocalChecked(),
-		GetFunction(New<FunctionTemplate>(Unsubscribe)).ToLocalChecked());
+	NAN_EXPORT(target, startService);
+	NAN_EXPORT(target, stopService);
+	NAN_EXPORT(target, parseQuery);
+	NAN_EXPORT(target, discardQuery);
+	NAN_EXPORT(target, fetchQuery);
+	NAN_EXPORT(target, unsubscribe);
 }
 
 NODE_MODULE(gqlmapi, Init)
