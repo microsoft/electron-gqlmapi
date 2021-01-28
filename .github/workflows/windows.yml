@@ -8,8 +8,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      with:
-        submodules: true
 
     - name: Cache vcpkg
       uses: actions/cache@v2
@@ -28,9 +26,6 @@ jobs:
         .\vcpkg integrate install
         .\vcpkg install cppgraphqlgen gtest --triplet x64-windows
 
-    - name: Create Build Environment
-      run: cmake -E make_directory build
-
     - name: Configure
       shell: pwsh
       run: |
@@ -38,8 +33,11 @@ jobs:
 
         npm config set cmake_CMAKE_TOOLCHAIN_FILE $vcpkgToolchain
 
-    - name: Build
-      run: npm install
+# Uncomment the next 2 blocks once microsoft/gqlmapi is public. Until then the build will fail
+# because it can't clone that repo with FetchContent in CMake.
 
-    - name: Test
-      run: npm test
+#    - name: Build
+#      run: npm install
+
+#    - name: Test
+#      run: npm test
