@@ -7,6 +7,12 @@ binding the GqlMAPI service to the Node v8 runtime is in [NodeBinding.cpp](./Nod
 one extra parameter in `startService` it should work with any service generated using
 [CppGraphQLGen](https://github.com/microsoft/cppgraphqlgen).
 
+This project was originally based on [electron-cppgraphql](https://github.com/wravery/electron-cppgraphql),
+but it has many upgrades to the build process, packaging, and the implementation since then. It is not
+cross-platform like electron-cppgraphql (which used a trivial service with mock data), but I intend to feed
+these improvements back into electron-cppgraphql. For now, this is a much better starting point if you want
+to implement your own Node Native Module for a CppGraphQLGen service.
+
 ## Getting Started
 
 To begin, you will need to satisfy the [requirements](https://github.com/microsoft/gqlmapi#getting-started)
