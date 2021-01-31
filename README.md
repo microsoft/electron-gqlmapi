@@ -4,8 +4,8 @@ This is a Node Native Module wrapped around [GqlMAPI](https://github.com/microso
 against the [Electron](https://www.electronjs.org/) runtime. You could build it for a different
 version of Node or v8 as long as it's supported in [CMake.js](https://github.com/cmake-js/cmake-js)
 and [NAN](https://github.com/nodejs/nan). The core logic for binding the GqlMAPI service to the
-Node v8 runtime is in [NodeBinding.cpp](./NodeBinding.cpp), and aside from one extra parameter in
-`startService`, it should work with any service generated using
+Node v8 runtime is in [NodeBinding.cpp](./src/NodeBinding.cpp), and aside from one extra parameter
+in `startService`, it should work with any service generated using
 [CppGraphQLGen](https://github.com/microsoft/cppgraphqlgen).
 
 This project was originally based on [electron-cppgraphql](https://github.com/wravery/electron-cppgraphql),
