@@ -10,9 +10,13 @@ set(CMAKE_CXX_STANDARD 17)
 include(FetchContent)
 FetchContent_Declare(gqlmapi
   GIT_REPOSITORY "https://github.com/microsoft/gqlmapi"
-  GIT_TAG "8ad3281e102b2eff87355e45e03eaee04d3fcb5a"
+  GIT_TAG "c0599abf8841856127358bdece9c816dcee9fe0a"
   GIT_PROGRESS TRUE)
-FetchContent_MakeAvailable(gqlmapi)
+FetchContent_GetProperties(gqlmapi)
+if(NOT gqlmapi_POPULATED)
+  FetchContent_Populate(gqlmapi)
+  add_subdirectory(${gqlmapi_SOURCE_DIR} ${gqlmapi_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif()
 
 execute_process(COMMAND node -e "require('nan')"
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
