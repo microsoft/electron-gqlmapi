@@ -33,11 +33,9 @@ jobs:
 
         npm config set cmake_CMAKE_TOOLCHAIN_FILE $vcpkgToolchain
 
-# Uncomment the next 2 blocks once microsoft/gqlmapi is public. Until then the build will fail
-# because it can't clone that repo with FetchContent in CMake.
+    - name: Build
+      run: npm install
 
-#    - name: Build
-#      run: npm install
-
+# The Test step depends on having a 64-bit version of Microsoft Office installed on the machine.
 #    - name: Test
 #      run: npm test
