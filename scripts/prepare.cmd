@@ -13,4 +13,5 @@ call npx cmake-js compile
 
 rem Copy the outputs to the bin directory
 copy .\build\Release\*.node ..\bin\
+copy .\build\Release\gqlmapi.dll ..\bin\
 copy .\build\Release\graphql*.dll ..\bin\
