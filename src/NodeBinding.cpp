@@ -109,7 +109,15 @@ NAN_METHOD(parseQuery)
 
 	try
 	{
-		queryMap[queryId] = peg::parseString(query);
+		auto ast = peg::parseString(query);
+		auto validationErrors = serviceSingleton->validate(ast);
+
+		if (!validationErrors.empty())
+		{
+			throw service::schema_exception { std::move(validationErrors) };
+		}
+
+		queryMap[queryId] = std::move(ast);
 		info.GetReturnValue().Set(New<Int32>(queryId));
 	}
 	catch (const std::exception& ex)

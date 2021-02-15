@@ -1,7 +1,7 @@
 {
   "name": "electron-gqlmapi",
   "license": "MIT",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Node Native Module (built for electron) which exposes fetch and subscribe entrypoints to go with GqlMAPI",
   "homepage": "https://github.com/microsoft/electron-gqlmapi",
   "repository": "github:microsoft/electron-gqlmapi",
