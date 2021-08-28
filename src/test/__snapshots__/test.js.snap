@@ -92,6 +92,34 @@ Object {
         },
         Object {
           "kind": "INPUT_OBJECT",
+          "name": "NamedPropInput",
+        },
+        Object {
+          "kind": "INPUT_OBJECT",
+          "name": "PropValueInput",
+        },
+        Object {
+          "kind": "INPUT_OBJECT",
+          "name": "MultipleItemsInput",
+        },
+        Object {
+          "kind": "INPUT_OBJECT",
+          "name": "PropIdInput",
+        },
+        Object {
+          "kind": "INPUT_OBJECT",
+          "name": "PropertyInput",
+        },
+        Object {
+          "kind": "INPUT_OBJECT",
+          "name": "Order",
+        },
+        Object {
+          "kind": "INPUT_OBJECT",
+          "name": "Column",
+        },
+        Object {
+          "kind": "INPUT_OBJECT",
           "name": "CreateItemInput",
         },
         Object {
@@ -105,34 +133,6 @@ Object {
         Object {
           "kind": "INPUT_OBJECT",
           "name": "ModifyFolderInput",
-        },
-        Object {
-          "kind": "INPUT_OBJECT",
-          "name": "MultipleItemsInput",
-        },
-        Object {
-          "kind": "INPUT_OBJECT",
-          "name": "NamedPropInput",
-        },
-        Object {
-          "kind": "INPUT_OBJECT",
-          "name": "PropIdInput",
-        },
-        Object {
-          "kind": "INPUT_OBJECT",
-          "name": "PropValueInput",
-        },
-        Object {
-          "kind": "INPUT_OBJECT",
-          "name": "PropertyInput",
-        },
-        Object {
-          "kind": "INPUT_OBJECT",
-          "name": "Order",
-        },
-        Object {
-          "kind": "INPUT_OBJECT",
-          "name": "Column",
         },
         Object {
           "kind": "UNION",
