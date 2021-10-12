@@ -41,7 +41,7 @@
     "arch": "x64"
   },
   "dependencies": {
-    "electron": "~11.2.0"
+    "electron": "~11.5.0"
   },
   "devDependencies": {
     "@jest-runner/electron": "^3.0.0",
