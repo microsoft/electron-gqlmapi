@@ -8,20 +8,13 @@
 #include <nan.h>
 
 #include <iostream>
-#include <memory>
 #include <map>
-#include <thread>
+#include <memory>
 #include <queue>
+#include <thread>
 
-using v8::Function;
-using v8::FunctionTemplate;
-using v8::Promise;
-using v8::Local;
-using v8::String;
-using v8::Int32;
-using v8::Value;
-using Nan::AsyncQueueWorker;
 using Nan::AsyncProgressQueueWorker;
+using Nan::AsyncQueueWorker;
 using Nan::Callback;
 using Nan::DecodeWrite;
 using Nan::Encoding;
@@ -31,6 +24,13 @@ using Nan::New;
 using Nan::Null;
 using Nan::Set;
 using Nan::To;
+using v8::Function;
+using v8::FunctionTemplate;
+using v8::Int32;
+using v8::Local;
+using v8::Promise;
+using v8::String;
+using v8::Value;
 
 using namespace graphql;
 
@@ -70,16 +70,15 @@ struct SubscriptionPayloadQueue : std::enable_shared_from_this<SubscriptionPaylo
 		lock.unlock();
 		condition.notify_one();
 
-		if (deferUnsubscribe
-			&& serviceSingleton)
+		if (deferUnsubscribe && serviceSingleton)
 		{
-			serviceSingleton->unsubscribe(std::launch::deferred, *deferUnsubscribe).get();
+			serviceSingleton->unsubscribe({ *deferUnsubscribe }).get();
 		}
 	}
 
 	std::mutex mutex;
 	std::condition_variable condition;
-	std::queue<std::future<response::Value>> payloads;
+	std::queue<response::AwaitableValue> payloads;
 	std::optional<service::SubscriptionKey> key;
 	bool registered = false;
 };
@@ -136,9 +135,11 @@ NAN_METHOD(discardQuery)
 class RegisteredSubscription : public AsyncProgressQueueWorker<std::string>
 {
 public:
-	explicit RegisteredSubscription(std::int32_t queryId, std::string&& operationName, const std::string& variables, std::unique_ptr<Callback>&& next, std::unique_ptr<Callback>&& complete)
+	explicit RegisteredSubscription(std::int32_t queryId, std::string&& operationName,
+		const std::string& variables, std::unique_ptr<Callback>&& next,
+		std::unique_ptr<Callback>&& complete)
 		: AsyncProgressQueueWorker(complete.release(), "graphql:subscription")
-		, _next{ std::move(next) }
+		, _next { std::move(next) }
 	{
 		try
 		{
@@ -152,7 +153,8 @@ public:
 			}
 
 			auto& ast = itrQuery->second;
-			auto parsedVariables = (variables.empty() ? response::Value(response::Type::Map) : response::parseJSON(variables));
+			auto parsedVariables = (variables.empty() ? response::Value(response::Type::Map)
+													  : response::parseJSON(variables));
 
 			if (parsedVariables.type() != response::Type::Map)
 			{
@@ -161,37 +163,38 @@ public:
 
 			std::unique_lock<std::mutex> lock(_payloadQueue->mutex);
 
-			if (serviceSingleton->findOperationDefinition(ast, operationName).first == service::strSubscription)
+			if (serviceSingleton->findOperationDefinition(ast, operationName).first
+				== service::strSubscription)
 			{
 				_payloadQueue->registered = true;
-				_payloadQueue->key = std::make_optional(serviceSingleton->subscribe(std::launch::deferred, service::SubscriptionParams{
-					nullptr,
-					peg::ast{ ast },
-					std::move(operationName),
-					std::move(parsedVariables)
-					}, [spQueue = _payloadQueue](std::future<response::Value> payload) noexcept -> void
-				{
-					std::unique_lock<std::mutex> lock(spQueue->mutex);
+				_payloadQueue->key = std::make_optional(
+					serviceSingleton
+						->subscribe(
+							{ [spQueue = _payloadQueue](response::Value payload) noexcept -> void {
+								 std::unique_lock<std::mutex> lock(spQueue->mutex);
 
-					if (!spQueue->registered)
-					{
-						return;
-					}
+								 if (!spQueue->registered)
+								 {
+									 return;
+								 }
 
-					spQueue->payloads.push(std::move(payload));
+								 std::promise<response::Value> promise;
 
-					lock.unlock();
-					spQueue->condition.notify_one();
-				}).get());
+								 promise.set_value(std::move(payload));
+								 spQueue->payloads.push(promise.get_future());
+
+								 lock.unlock();
+								 spQueue->condition.notify_one();
+							 },
+								peg::ast { ast },
+								std::move(operationName),
+								std::move(parsedVariables) })
+						.get());
 			}
 			else
 			{
-				_payloadQueue->payloads.push(serviceSingleton->resolve(
-					std::launch::deferred,
-					nullptr,
-					ast,
-					operationName,
-					std::move(parsedVariables)));
+				_payloadQueue->payloads.push(
+					serviceSingleton->resolve({ ast, operationName, std::move(parsedVariables) }));
 
 				lock.unlock();
 				_payloadQueue->condition.notify_one();
@@ -230,10 +233,8 @@ private:
 		{
 			std::unique_lock<std::mutex> lock(spQueue->mutex);
 
-			spQueue->condition.wait(lock, [spQueue]() noexcept -> bool
-			{
-				return !spQueue->registered
-					|| !spQueue->payloads.empty();
+			spQueue->condition.wait(lock, [spQueue]() noexcept -> bool {
+				return !spQueue->registered || !spQueue->payloads.empty();
 			});
 
 			auto payloads = std::move(spQueue->payloads);
@@ -245,7 +246,7 @@ private:
 
 			while (!payloads.empty())
 			{
-				response::Value document{ response::Type::Map };
+				response::Value document { response::Type::Map };
 				auto payload = std::move(payloads.front());
 
 				payloads.pop();
@@ -257,8 +258,8 @@ private:
 				catch (service::schema_exception& scx)
 				{
 					document.reserve(2);
-					document.emplace_back(std::string{ service::strData }, {});
-					document.emplace_back(std::string{ service::strErrors }, scx.getErrors());
+					document.emplace_back(std::string { service::strData }, {});
+					document.emplace_back(std::string { service::strErrors }, scx.getErrors());
 				}
 				catch (const std::exception& ex)
 				{
@@ -266,8 +267,9 @@ private:
 
 					oss << "Caught exception delivering subscription payload: " << ex.what();
 					document.reserve(2);
-					document.emplace_back(std::string{ service::strData }, {});
-					document.emplace_back(std::string{ service::strErrors }, response::Value{ oss.str() });
+					document.emplace_back(std::string { service::strData }, {});
+					document.emplace_back(std::string { service::strErrors },
+						response::Value { oss.str() });
 				}
 
 				json.push_back(response::toJSON(std::move(document)));
@@ -314,7 +316,11 @@ NAN_METHOD(fetchQuery)
 	std::string variables(*Nan::Utf8String(To<String>(info[2]).ToLocalChecked()));
 	auto next = std::make_unique<Callback>(To<Function>(info[3]).ToLocalChecked());
 	auto complete = std::make_unique<Callback>(To<Function>(info[4]).ToLocalChecked());
-	auto subscription = std::make_unique<RegisteredSubscription>(queryId, std::move(operationName), variables, std::move(next), std::move(complete));
+	auto subscription = std::make_unique<RegisteredSubscription>(queryId,
+		std::move(operationName),
+		variables,
+		std::move(next),
+		std::move(complete));
 
 	subscriptionMap[queryId] = subscription->GetPayloadQueue();
 	AsyncQueueWorker(subscription.release());
