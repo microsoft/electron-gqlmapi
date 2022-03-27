@@ -2,15 +2,15 @@
 # Licensed under the MIT License.
 
 cmake_minimum_required(VERSION 3.17.1)
-project(electron-gqlmapi VERSION 1.0.2)
+project(electron-gqlmapi VERSION 1.0.3)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 # Fetch the https://github.com/microsoft/gqlmapi repository.
 include(FetchContent)
 FetchContent_Declare(gqlmapi
   GIT_REPOSITORY "https://github.com/microsoft/gqlmapi"
-  GIT_TAG "953f8c0a1c4d069c34716dfe97ede4d3ff1ddcaa"
+  GIT_TAG "206b42377ff366ac4cf5c80d6a095e31ca744c86"
   GIT_PROGRESS TRUE)
 FetchContent_GetProperties(gqlmapi)
 if(NOT gqlmapi_POPULATED)
