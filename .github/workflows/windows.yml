@@ -7,10 +7,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@0717577d45739eb3c851188b29f50ed6c0b2194e # v2.8.0
 
     - name: Cache vcpkg
-      uses: actions/cache@v2
+      uses: actions/cache@8492260343ad570701412c2f464a5877dc76bace # v2
       id: cache-vcpkg
       with:
         path: vcpkg/
