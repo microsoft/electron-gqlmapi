@@ -14,7 +14,7 @@ jobs:
       id: cache-vcpkg
       with:
         path: vcpkg/
-        key: vcpkg-x64-windows
+        key: vcpkg-x64-windows-cppgraphqlgen-schemagen
 
     - name: Install Dependencies
       if: ${{ !steps.cache-vcpkg.outputs.cache-hit }}
@@ -24,7 +24,7 @@ jobs:
         cd vcpkg
         .\bootstrap-vcpkg.bat
         .\vcpkg integrate install
-        .\vcpkg install cppgraphqlgen gtest --triplet x64-windows
+        .\vcpkg install "cppgraphqlgen[schemagen]" gtest --triplet x64-windows
 
     - name: Configure
       shell: pwsh
