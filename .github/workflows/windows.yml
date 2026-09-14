@@ -31,7 +31,7 @@ jobs:
       run: |
         $vcpkgToolchain = Join-Path '.\vcpkg' '.\scripts\buildsystems\vcpkg.cmake' -Resolve
 
-        npm config set cmake_CMAKE_TOOLCHAIN_FILE $vcpkgToolchain
+        "CMAKE_TOOLCHAIN_FILE=$vcpkgToolchain" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
     - name: Build
       run: npm install

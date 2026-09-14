@@ -18,14 +18,15 @@ to implement your own Node Native Module for a CppGraphQLGen service.
 
 To begin, you will need to satisfy the [requirements](https://github.com/microsoft/gqlmapi#getting-started)
 for building GqlMAPI. If you are using Vcpkg to install CppGraphQLGen and GoogleTest as suggested in those
-instructions, then you will also need to save an npm config setting for CMake.js to use the vcpkg.cmake
-toolchain file:
+instructions, then you will also need to set the `CMAKE_TOOLCHAIN_FILE` environment variable so that
+CMake uses the vcpkg.cmake toolchain file:
 
 ```cmd
-> npm config set cmake_CMAKE_TOOLCHAIN_FILE %VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake
+> setx CMAKE_TOOLCHAIN_FILE %VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake
 ```
 
-Then you can build and test the module using npm:
+The `setx` command saves the variable for future sessions, so you will need to open a new command
+prompt before building. Then you can build and test the module using npm:
 
 ```cmd
 > npm install
