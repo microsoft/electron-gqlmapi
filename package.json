@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@jest-runner/electron": "^3.0.0",
-    "cmake-js": "^6.1.0",
+    "cmake-js": "^8.0.0",
     "jest": "^26.6.0",
     "nan": "^2.14.0"
   }
