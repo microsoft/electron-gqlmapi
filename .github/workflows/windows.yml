@@ -14,7 +14,7 @@ jobs:
       id: cache-vcpkg
       with:
         path: vcpkg/
-        key: vcpkg-x64-windows
+        key: vcpkg-x64-windows-cppgraphqlgen-schemagen
 
     - name: Install Dependencies
       if: ${{ !steps.cache-vcpkg.outputs.cache-hit }}
@@ -24,14 +24,14 @@ jobs:
         cd vcpkg
         .\bootstrap-vcpkg.bat
         .\vcpkg integrate install
-        .\vcpkg install cppgraphqlgen gtest --triplet x64-windows
+        .\vcpkg install "cppgraphqlgen[schemagen]" gtest --triplet x64-windows
 
     - name: Configure
       shell: pwsh
       run: |
         $vcpkgToolchain = Join-Path '.\vcpkg' '.\scripts\buildsystems\vcpkg.cmake' -Resolve
 
-        npm config set cmake_CMAKE_TOOLCHAIN_FILE $vcpkgToolchain
+        "CMAKE_TOOLCHAIN_FILE=$vcpkgToolchain" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
     - name: Build
       run: npm install
