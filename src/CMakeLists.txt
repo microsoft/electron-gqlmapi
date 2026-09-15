@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 20)
 include(FetchContent)
 FetchContent_Declare(gqlmapi
   GIT_REPOSITORY "https://github.com/microsoft/gqlmapi"
-  GIT_TAG "206b42377ff366ac4cf5c80d6a095e31ca744c86"
+  GIT_TAG "1d1c787addd0f5a687cfd35c23ffe98688379806"
   GIT_PROGRESS TRUE)
 FetchContent_GetProperties(gqlmapi)
 if(NOT gqlmapi_POPULATED)
